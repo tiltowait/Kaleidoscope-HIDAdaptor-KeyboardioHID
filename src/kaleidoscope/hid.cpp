@@ -92,18 +92,6 @@ void resetModifierTracking(void) {
   requested_modifier_flags = 0;
 }
 
-// isModifierKey takes a Key and returns true if the key is a
-// keyboard key corresponding to a modifier like Control, Alt or Shift
-// TODO: This function should be lifted to the Kaleidoscope core, somewhere.
-
-bool isModifierKey(Key key) {
-  // If it's not a keyboard key, return false
-  if (key.flags & (SYNTHETIC | RESERVED)) return false;
-
-  return (key.keyCode >= HID_KEYBOARD_FIRST_MODIFIER &&
-          key.keyCode <= HID_KEYBOARD_LAST_MODIFIER);
-}
-
 // requestModifiers takes a bitmap of modifiers that might apply
 // to the next USB HID report and adds them to a bitmap of all such modifiers.
 
@@ -171,6 +159,18 @@ void initializeKeyboard() {
   WITH_BOOTKEYBOARD {
     BootKeyboard.begin();
   }
+}
+
+// isModifierKey takes a Key and returns true if the key is a
+// keyboard key corresponding to a modifier like Control, Alt or Shift
+// TODO: This function should be lifted to the Kaleidoscope core, somewhere.
+
+bool isModifierKey(Key mappedKey) {
+  // If it's not a keyboard key, return false
+  if (mappedKey.flags & (SYNTHETIC | RESERVED)) return false;
+
+  return (mappedKey.keyCode >= HID_KEYBOARD_FIRST_MODIFIER &&
+          mappedKey.keyCode <= HID_KEYBOARD_LAST_MODIFIER);
 }
 
 // pressKey takes a Key, as well as optional boolean 'toggledOn' which defaults
